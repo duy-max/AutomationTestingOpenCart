@@ -1,5 +1,7 @@
 package utils;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import ru.yandex.qatools.ashot.comparison.ImageDiffer;
 
 import javax.imageio.ImageIO;
@@ -13,6 +15,7 @@ public class CommonUtils {
         return new Date().toString().replaceAll("[ :+]", "") + "@gmail.com";
     }
 
+    //Do claude ai viết
     public static boolean compareImages(String actualImagePath, String expectedImagePath) throws IOException {
         // Đọc hai ảnh từ file
         BufferedImage actualImage = ImageIO.read(new File(actualImagePath));
@@ -24,4 +27,6 @@ public class CommonUtils {
         // Trả về kết quả so sánh, true khi 2 ảnh giống nhau, false thì ngược lại
         return !imageDiffer.makeDiff(actualImage, expectedImage).hasDiff();
     }
+
+
 }

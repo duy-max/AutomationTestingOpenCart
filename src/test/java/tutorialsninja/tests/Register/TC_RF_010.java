@@ -1,22 +1,21 @@
 package tutorialsninja.tests.Register;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.io.FileHandler;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-import utils.CommonUtils;
+
 public class TC_RF_010 {
+    WebDriver driver = null;
     @Test
     public void verifyRegisteringAccountUsingInvalidEmail() throws IOException, InterruptedException {
 
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         driver.get("https://tutorialsninja.com/demo");
@@ -33,34 +32,23 @@ public class TC_RF_010 {
         driver.findElement(By.xpath("//input[@name='newsletter'][@value='1']")).click();
         driver.findElement(By.name("agree")).click();
         driver.findElement(By.xpath("//input[@value='Continue']")).click();
-        Thread.sleep(3000);
 
-        File srcScreenshot1 = driver.findElement(By.xpath("//form[@class='form-horizontal']")).getScreenshotAs(OutputType.FILE);
-        FileHandler.copy(srcScreenshot1,new File(System.getProperty("user.dir")+"\\Screenshots\\sc1Actual.png"));
 
-        Thread.sleep(3000);
-
-        Assert.assertFalse(CommonUtils.compareImages(System.getProperty("user.dir")+"\\Screenshots\\sc1Actual.png",System.getProperty("user.dir")+"\\Screenshots\\sc1Expected.png"));
+        String messageExpected1 = "Please include an '@' in the email address. 'duy' is missing an '@'.";
+        Thread.sleep(2000);
+        validateMessage(messageExpected1);
 
         driver.findElement(By.id("input-email")).clear();
         driver.findElement(By.id("input-email")).sendKeys("duy@");
         driver.findElement(By.xpath("//input[@value='Continue']")).click();
 
+        String messageExpected2 = "Please enter a part following '@'. 'duy@' is incomplete.";
         Thread.sleep(2000);
-
-        File srcScreenshot2 = driver.findElement(By.xpath("//form[@class='form-horizontal']")).getScreenshotAs(OutputType.FILE);
-        FileHandler.copy(srcScreenshot2,new File(System.getProperty("user.dir")+"\\Screenshots\\sc2Actual.png"));
-
-        Thread.sleep(2000);
-
-        Assert.assertFalse(CommonUtils.compareImages(System.getProperty("user.dir")+"\\Screenshots\\sc2Actual.png",System.getProperty("user.dir")+"\\Screenshots\\sc2Expected.png"));
+        validateMessage(messageExpected2);
 
         driver.findElement(By.id("input-email")).clear();
         driver.findElement(By.id("input-email")).sendKeys("duy@gmail");
         driver.findElement(By.xpath("//input[@value='Continue']")).click();
-
-        Thread.sleep(2000);
-
         String expectedWarningMessage = "E-Mail Address does not appear to be valid!";
         Thread.sleep(2000);
         Assert.assertEquals(driver.findElement(By.xpath("//input[@id='input-email']/following-sibling::div")).getText(), expectedWarningMessage);
@@ -68,16 +56,18 @@ public class TC_RF_010 {
         driver.findElement(By.id("input-email")).clear();
         driver.findElement(By.id("input-email")).sendKeys("duy@gmail.");
         driver.findElement(By.xpath("//input[@value='Continue']")).click();
-
-        Thread.sleep(3000);
-
-        File srcScreenshot3 = driver.findElement(By.xpath("//form[@class='form-horizontal']")).getScreenshotAs(OutputType.FILE);
-        FileHandler.copy(srcScreenshot3,new File(System.getProperty("user.dir")+"\\Screenshots\\sc3Actual.png"));
-
-        Thread.sleep(3000);
-
-        Assert.assertFalse(CommonUtils.compareImages(System.getProperty("user.dir")+"\\Screenshots\\sc3Actual.png",System.getProperty("user.dir")+"\\Screenshots\\sc3Expected.png"));
+        String messageExpected3 = "'.' is used at a wrong position in 'gmail.'.";
+        Thread.sleep(2000);
+        validateMessage(messageExpected3);
 
         driver.quit();
+    }
+
+    //Dùng js để lấy thuộc tính validationMessage trong HTML5
+    public void validateMessage(String messageExpected){
+        String messageActual = (String)((JavascriptExecutor) driver)
+                .executeScript("return arguments[0].validationMessage;",driver.findElement(By.id("input-email")));
+        Assert.assertEquals(messageActual, messageExpected);
+
     }
 }
