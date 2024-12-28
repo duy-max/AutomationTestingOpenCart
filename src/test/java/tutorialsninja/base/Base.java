@@ -3,10 +3,10 @@ package tutorialsninja.base;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.devtools.v118.indexeddb.model.Key;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import pages.*;
 import utils.CommonUtils;
 
 import java.time.Duration;
@@ -14,10 +14,38 @@ import java.util.Properties;
 
 public class Base {
     WebDriver driver;
+    Properties prop;
+   // MyXSL
+    public LandingPage landingPage;
+    public RegisterPage registerPage;
+    public AccountSuccessPage accountSuccessPage;
+    public AccountPage accountPage;
+    public NewsletterPage newsletterPage;
+    public LoginPage loginPage;
+    public EditAccountInformationPage editAccountInformationPage;
+    public ContactUsPage contactUsPage;
+    public ShoppingCartPage shoppingCartPage;
+    public SearchPage searchPage;
+    public ForgottenPasswordPage forgottenPasswordPage;
+    public AboutUsPage aboutUsPage;
+    public DeliveryInformationPage deliveryInformationPage;
+    public PrivacyPolicyPage privacyPolicyPage;
+    public TermsAndConditionsPage termsAndConditionsPage;
+    public ProductReturnsPage productReturnsPage;
+    public SiteMapPage siteMapPage;
+    public BrandPage brandPage;
+    public GiftCertificatePage giftCertificatePage;
+    public AffiliateLoginPage affiliateLoginPage;
+    public SpecialOffersPage specialOffersPage;
+    public HeaderOptions headerOptions;
+    public RightColumnOptions rightColumnOptions;
+    public FooterOptions footerOptions;
+    public ChangePasswordPage changePasswordPage;
+    public LogoutPage logoutPage;
 
     public WebDriver openBrowserAndApplication() {
 
-        Properties prop = CommonUtils.loadProperties();
+        prop = CommonUtils.loadProperties();
 
         String browserName = prop.getProperty("browserName");
         switch (browserName) {
@@ -26,7 +54,7 @@ public class Base {
             case "edge" -> driver = new EdgeDriver();
         }
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(prop.getProperty("appURL"));
         return driver;
     }
@@ -60,4 +88,49 @@ public class Base {
     public String getHTMLCodeOfThePage(WebDriver driver){
         return driver.getPageSource();
     }
+
+    public String getPageURL(WebDriver driver) {
+        return driver.getCurrentUrl();
+    }
+    public String getPageTitle(WebDriver driver) {
+        return driver.getTitle();
+    }
+
+    public void  refreshPage(WebDriver driver) {
+        driver.navigate().refresh();
+    }
+
+    public WebDriver navigateToRegisterPage(WebDriver driver,String URL) {
+        driver.navigate().to(URL);
+        return driver;
+    }
+
+
+
+    public void enterDetailsIntoRegisterAccountPageFields(WebDriver driver) {
+
+        prop = CommonUtils.loadProperties();
+        Actions actions = new Actions(driver);
+        actions.sendKeys(prop.getProperty("firstName")).pause(Duration.ofSeconds(1)).sendKeys(Keys.TAB)
+                .pause(Duration.ofSeconds(1)).sendKeys(prop.getProperty("lastName")).sendKeys(Keys.TAB)
+                .pause(Duration.ofSeconds(1)).sendKeys(CommonUtils.generateBrandNewEmail()).pause(Duration.ofSeconds(1))
+                .sendKeys(Keys.TAB).pause(Duration.ofSeconds(1)).sendKeys(prop.getProperty("telephoneNumber"))
+                .pause(Duration.ofSeconds(1)).sendKeys(Keys.TAB).pause(Duration.ofSeconds(1))
+                .sendKeys(prop.getProperty("validPassword")).pause(Duration.ofSeconds(1)).sendKeys(Keys.TAB)
+                .pause(Duration.ofSeconds(1)).sendKeys(prop.getProperty("validPassword")).pause(Duration.ofSeconds(1))
+                .sendKeys(Keys.TAB).pause(Duration.ofSeconds(1)).sendKeys(Keys.LEFT).pause(Duration.ofSeconds(1))
+                .sendKeys(Keys.TAB).pause(Duration.ofSeconds(1)).sendKeys(Keys.TAB).pause(Duration.ofSeconds(1))
+                .sendKeys(Keys.SPACE).pause(Duration.ofSeconds(1)).sendKeys(Keys.TAB).pause(Duration.ofSeconds(1))
+                .sendKeys(Keys.ENTER).pause(Duration.ofSeconds(3)).build().perform();
+
+
+    }
+
+//    public static void waitForPageLoad(WebDriver driver) {
+//        JavascriptExecutor js = (JavascriptExecutor) driver;
+//        while (!js.executeScript("return document.readyState").toString().equals("complete")) {
+//            // Chờ trang tải hoàn toàn
+//        }
+//    }
+
 }

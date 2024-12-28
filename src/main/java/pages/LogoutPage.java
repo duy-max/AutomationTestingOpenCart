@@ -17,8 +17,16 @@ public class LogoutPage {
     @FindBy(xpath = "//ul[@class='breadcrumb']//a[text()='Logout']")
     private WebElement logoutBreadcrumb;
 
+    @FindBy(xpath = "//a[@class='list-group-item'][normalize-space()='Login']")
+    private WebElement loginLinkRightColumnOption;
+
     public boolean isLogoutPageDisplayed() {
         return logoutBreadcrumb.isDisplayed();
+    }
+
+    public LoginPage clickOnLoginLinkRightColumnOption(){
+        loginLinkRightColumnOption.click();
+        return new LoginPage(driver);
     }
 
 }

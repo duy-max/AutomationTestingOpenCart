@@ -15,26 +15,22 @@ import java.util.Properties;
 public class Login extends Base {
     WebDriver driver;
     Properties prop;
-    LandingPage landingPage;
-    LoginPage loginPage;
-    AccountPage accountPage;
-    ForgottenPasswordPage forgottenPasswordPage;
-    LogoutPage logoutPage;
 
     @BeforeMethod
     public void setup() {
         driver = openBrowserAndApplication();
         prop = CommonUtils.loadProperties();
         landingPage = new LandingPage(driver);
-        landingPage.clickMyAccountDropMenu();
+        landingPage.clickOnMyAccount();
         loginPage = landingPage.selectLoginOption();
     }
+
     @Test(priority = 1)
     public void verifyLoginWithValidCredentials() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
-        accountPage = loginPage.clickLoginButton();
+        accountPage = loginPage.clickOnLoginButton();
         Assert.assertTrue(accountPage.isUserLoggedIn());
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
 
@@ -42,10 +38,10 @@ public class Login extends Base {
 
     @Test(priority = 2)
     public void verifyLoginWithInvalidCredentials() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
         loginPage.enterEmail(CommonUtils.generateBrandNewEmail());
         loginPage.enterPassword(prop.getProperty("invalidPassword"));
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         String expectedWarning = "Warning: No match for E-Mail Address and/or Password.";
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
 
@@ -53,10 +49,10 @@ public class Login extends Base {
 
     @Test(priority = 3)
     public void verifyLoginWithInvalidEmailAndValidPassword() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
         loginPage.enterEmail(CommonUtils.generateBrandNewEmail());
         loginPage.enterPassword(prop.getProperty("validPassword"));
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         String expectedWarning = "Warning: No match for E-Mail Address and/or Password.";
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
 
@@ -64,10 +60,10 @@ public class Login extends Base {
 
     @Test(priority = 4)
     public void verifyLoginWithValidEmailAndInvalidPassword() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
         loginPage.enterEmail(CommonUtils.validEmailRandomizeGenerator());
         loginPage.enterPassword(prop.getProperty("invalidPassword"));
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         String expectedWarning = "Warning: No match for E-Mail Address and/or Password.";
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
 
@@ -75,8 +71,8 @@ public class Login extends Base {
 
     @Test(priority = 5)
     public void verifyLoginWithoutCredentials() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
-        loginPage.clickLoginButton();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+        loginPage.clickOnLoginButton();
         String expectedWarning = "Warning: No match for E-Mail Address and/or Password.";
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
 
@@ -84,15 +80,16 @@ public class Login extends Base {
 
     @Test(priority = 6)
     public void verifyForgottenPasswordLinkOnLoginPage() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
-        Assert.assertTrue(loginPage.isForgottenPasswordLinkDisplayed());
-        forgottenPasswordPage = loginPage.clickForgottenPasswordLink();
-        Assert.assertTrue(forgottenPasswordPage.isForgottenPasswordPageDisplayed());
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+        Assert.assertTrue(loginPage.availabilityOfForgottenPasswordLink());
+        forgottenPasswordPage = loginPage.clickOnForgottenPasswordLink();
+        Assert.assertTrue(forgottenPasswordPage.didWeNavigateToForgottendPasswordPage());
 
     }
+
     @Test(priority = 7)
     public void verifyLoggingIntoTheApplicationUsingKeyboardKeys() {
-        Assert.assertTrue(loginPage.isLoginBreadcrumbDisplayed());
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
         pressKeyMultipleTimes(driver, Keys.TAB, 23);
         enterDetailsIntoLoginPageFields(driver);
         accountPage = new AccountPage(driver);
@@ -119,7 +116,7 @@ public class Login extends Base {
 
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         navigateBack(driver);
         loginPage = new LoginPage(driver);
         accountPage = loginPage.clickOnMyAccountRightColumnOption();
@@ -131,9 +128,9 @@ public class Login extends Base {
     public void verifyBrowserBackAfterLoggingOut() {
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
-        accountPage = loginPage.clickLoginButton();
+        accountPage = loginPage.clickOnLoginButton();
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
-        logoutPage = accountPage.clickLogoutOption();
+        logoutPage = accountPage.clickOnLogoutOption();
         Assert.assertTrue(logoutPage.isLogoutPageDisplayed());
         navigateBack(driver);
         Assert.assertTrue(accountPage.isUserLoggedIn());
@@ -145,7 +142,7 @@ public class Login extends Base {
 
         loginPage.enterEmail(prop.getProperty("inactiveEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         String expectedWarning = "Warning: No match for E-Mail Address and/or Password.";
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
 
@@ -157,21 +154,22 @@ public class Login extends Base {
         loginPage.enterEmail(CommonUtils.generateBrandNewEmail());
         loginPage.enterPassword(prop.getProperty("validPassword"));
         String expectedWarning = "Warning: No match for E-Mail Address and/or Password.";
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         expectedWarning = "Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour.";
         Assert.assertEquals(loginPage.getWarningMessage(), expectedWarning);
 
     }
+
     @Test(priority = 13)
     public void verifyTextEnteredIntoPasswordFieldIsToggledToHideItsVisibility() {
 
@@ -186,8 +184,8 @@ public class Login extends Base {
         String passwordText = prop.getProperty("samplePassword");
         loginPage.enterPassword(passwordText);
         loginPage.selectPasswordFieldTextAndCopy();
-        loginPage.pasteCopiedTextIntoEmailField();
-        Assert.assertNotEquals(loginPage.getTextFromEmailField(), passwordText);
+        loginPage.pasteCopiedPasswordTextIntoEmailField();
+        Assert.assertNotEquals(loginPage.getTextCopiedIntoEmailField(), passwordText);
 
     }
 
@@ -198,11 +196,328 @@ public class Login extends Base {
         String passwordText = prop.getProperty("samplePassword");
         loginPage.enterPassword(passwordText);
         Assert.assertFalse(getHTMLCodeOfThePage(driver).contains(passwordText));
-        loginPage.clickLoginButton();
+        loginPage.clickOnLoginButton();
         Assert.assertFalse(getHTMLCodeOfThePage(driver).contains(passwordText));
 
     }
 
+    @Test(priority = 16)
+    public void verifyLoggingIntoApplicationAfterChangingPassword() {
+
+        String expectedWarningMessage = "Success: Your password has been successfully updated.";
+        String oldPassword = prop.getProperty("validPasswordTwo");
+        String newPassword = prop.getProperty("samplePasswordTwo");
+        loginPage.enterEmail(prop.getProperty("existingEmailTwo"));
+        loginPage.enterPassword(oldPassword);
+        accountPage = loginPage.clickOnLoginButton();
+        Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
+        changePasswordPage = accountPage.clickOnChangeYourPasswordOption();
+        Assert.assertTrue(changePasswordPage.isChangePasswordBreadcrumbDisplayed());
+        changePasswordPage.enterPassword(newPassword);
+        changePasswordPage.enterPasswordConfirm(newPassword);
+        accountPage = changePasswordPage.clickContinueButton();
+        Assert.assertEquals(accountPage.getMessage(), expectedWarningMessage);
+        logoutPage = accountPage.clickOnLogoutOption();
+        loginPage = logoutPage.clickOnLoginLinkRightColumnOption();
+        loginPage.enterEmail(prop.getProperty("existingEmailTwo"));
+        loginPage.enterPassword(oldPassword);
+        System.out.println("old password: " + oldPassword);
+        System.out.println("new password: " + newPassword);
+        loginPage.clickOnLoginButton();
+        String expectedWarningMessageLoginPage = "Warning: No match for E-Mail Address and/or Password.";
+        Assert.assertEquals(loginPage.getWarningMessage(), expectedWarningMessageLoginPage);
+        loginPage.clearPassword();
+        loginPage.enterPassword(newPassword);
+        accountPage = loginPage.clickOnLoginButton();
+        Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
+        CommonUtils.updateProperty("validPasswordTwo", newPassword);
+        CommonUtils.updateProperty("samplePasswordTwo", oldPassword);
+
+
+    }
+
+    @Test(priority = 17)
+    public void verifyNavigatingToDifferentPagesFromLoginPage() {
+        driver = loginPage.getDriver();
+        headerOptions = new HeaderOptions(driver);
+        contactUsPage = headerOptions.selectPhoneIconOption();
+        Assert.assertTrue(contactUsPage.didWeNavigateToContactUsPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        driver = loginPage.getDriver();
+        headerOptions = new HeaderOptions(driver);
+        loginPage = headerOptions.selectHeartIconOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        shoppingCartPage = headerOptions.selectShoppingCartOption();
+        Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        shoppingCartPage = headerOptions.selectCheckoutOption();
+        Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        landingPage = headerOptions.selectLogoOption();
+        Assert.assertEquals(driver.getCurrentUrl(), prop.getProperty("landingPageURL"));
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        searchPage = headerOptions.clickOnSearchButton();
+        Assert.assertTrue(searchPage.didWeNavigateToSearchPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        loginPage = loginPage.clickOnLoginBreadcrumb();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        loginPage = headerOptions.clickOnAccountBreadcrumb();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        landingPage = headerOptions.clickOnHomeBreadcrumb();
+        Assert.assertEquals(getPageURL(driver), prop.getProperty("landingPageURL"));
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        registerPage = loginPage.clickOnContinueButton();
+        Assert.assertTrue(registerPage.didWeNavigateToRegisterAccountPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        forgottenPasswordPage = loginPage.clickOnForgottenPasswordLink();
+        Assert.assertTrue(forgottenPasswordPage.didWeNavigateToForgottendPasswordPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        loginPage.clickOnLoginButton();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        loginPage = rightColumnOptions.clickOnRightSideLoginOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        registerPage = rightColumnOptions.clickOnRightSideRegisterOption();
+        Assert.assertTrue(registerPage.didWeNavigateToRegisterAccountPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        forgottenPasswordPage = rightColumnOptions.clickOnRightSideForgottenPasswordOption();
+        Assert.assertTrue(forgottenPasswordPage.didWeNavigateToForgottendPasswordPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        loginPage = rightColumnOptions.clickOnRightSideMyAccountOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideAddressBookOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideWishListOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideOrderHistoryOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideDownloadsOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideRecurringPaymentsOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideRewardPointsOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideReturnsOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideTransactionsOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        rightColumnOptions.clickOnRightSideNewsletterOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        AboutUsPage aboutUsPage = footerOptions.clickOnAboutUsFooterOption();
+        Assert.assertTrue(aboutUsPage.didWeNavigateToAboutUsBreadcrumb());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        deliveryInformationPage = footerOptions.clickOnDeliveryInformationFooterOption();
+        Assert.assertTrue(deliveryInformationPage.didWeNavigateToDeliveryInformationPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        privacyPolicyPage = footerOptions.clickOnPrivacyPolicyFooterOption();
+        Assert.assertTrue(privacyPolicyPage.didWeNavigateToPrivacyPolicyPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        termsAndConditionsPage = footerOptions.clickOnTermsAndConditionsFooterOption();
+        Assert.assertTrue(termsAndConditionsPage.didWeNavigateToTermsAndConditionsPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        contactUsPage = footerOptions.clickOnContactUsFooterOption();
+        Assert.assertTrue(contactUsPage.didWeNavigateToContactUsPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        productReturnsPage = footerOptions.clickOnReturnsFooterOption();
+        Assert.assertTrue(productReturnsPage.didWeNavigateToProductReturnsPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        siteMapPage = footerOptions.clickOnSiteMapFooterOption();
+        Assert.assertTrue(siteMapPage.didWeNavigateToSiteMapPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        brandPage = footerOptions.clickOnBrandsFooterOption();
+        Assert.assertTrue(brandPage.didWeNavigateToBrandsPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        giftCertificatePage = footerOptions.clickOnGiftCertificateFooterOption();
+        Assert.assertTrue(giftCertificatePage.didWeNavigateToGiftCertificatePage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        affiliateLoginPage = footerOptions.clickOnAffiliateFooterOption();
+        Assert.assertEquals(driver.getCurrentUrl(), prop.getProperty("affiliateLoginPageURL"));
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        specialOffersPage = footerOptions.clickOnSpecialsFooterOption();
+        Assert.assertTrue(specialOffersPage.didWeNavigateToSpecialOffersPage());
+        navigateBack(driver);
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        loginPage = footerOptions.clickOnMyAccountFooterOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        loginPage = footerOptions.clickOnOrderHistoryFooterOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        loginPage = footerOptions.clickOnWishListFooterOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        loginPage = new LoginPage(driver);
+        footerOptions = new FooterOptions(loginPage.getDriver());
+        loginPage = footerOptions.clickOnNewsletterFooterOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+    }
+
+    @Test(priority = 18)
+    public void verifyDifferentWaysOfNavigatingToLoginPage() {
+        registerPage = loginPage.clickOnContinueButton();
+        loginPage = registerPage.clickOnLoginPageLink();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
+        loginPage = rightColumnOptions.clickOnRightSideLoginOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+        headerOptions = new HeaderOptions(loginPage.getDriver());
+        headerOptions.clickOnMyAccountDropMenu();
+        loginPage = headerOptions.selectLoginOption();
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+
+
+    }
+
+    @Test(priority = 19)
+    public void verifyBreadCrumbPageHeadingTitleAndPageURLOfLoginPage() {
+        Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
+        Assert.assertEquals(getPageTitle(driver), prop.getProperty("loginPageTitle"));
+        Assert.assertEquals(getPageURL(driver), prop.getProperty("loginPageURL"));
+        Assert.assertEquals(loginPage.getPageHeadingOne(), prop.getProperty("registerPageHeadingOne"));
+        Assert.assertEquals(loginPage.getPageHeadingTwo(), prop.getProperty("registerPageHeadingTwo"));
+    }
+
+    @Test(priority = 20)
+    public void verifyUIOfLoginPage() {
+        if (prop.getProperty("browserName").equals("chrome")) {
+            CommonUtils.takeScreenshot(driver, "\\Screenshots\\actualChromeLoginPageUI.png");
+            Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+                    System.getProperty("user.dir") + "\\Screenshots\\actualChromeLoginPageUI.png",
+                    System.getProperty("user.dir") + "\\Screenshots\\expectedChromeLoginPageUI.png"));
+
+        }else if(prop.getProperty("browserName").equals("edge")) {
+            CommonUtils.takeScreenshot(driver, "\\Screenshots\\actualEdgeLoginPageUI.png");
+            Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+                    System.getProperty("user.dir") + "\\Screenshots\\actualEdgeLoginPageUI.png",
+                    System.getProperty("user.dir") + "\\Screenshots\\expectedEdgeLoginPageUI.png"));
+
+        }else if(prop.getProperty("browserName").equals("firefox")) {
+            CommonUtils.takeScreenshot(driver, "\\Screenshots\\actualFirefoxLoginPageUI.png");
+            Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+                    System.getProperty("user.dir") + "\\Screenshots\\actualFirefoxLoginPageUI.png",
+                    System.getProperty("user.dir") + "\\Screenshots\\expectedFirefoxLoginPageUI.png"));
+
+        }
+    }
+
+    @Test(priority = 21)
+    public void verifyLoginFunctionalityInAllEnvironments() {
+
+        loginPage.enterEmail(prop.getProperty("existingEmail"));
+        loginPage.enterPassword(prop.getProperty("validPassword"));
+        accountPage = loginPage.clickOnLoginButton();
+        Assert.assertTrue(accountPage.isUserLoggedIn());
+        Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
+
+    }
 
     @AfterMethod
     public void tearDown() {

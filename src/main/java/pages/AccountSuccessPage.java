@@ -4,17 +4,21 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import pages.root.RootPage;
+import utils.ElementUtils;
 
-public class AccountSuccessPage {
+public class AccountSuccessPage extends RootPage {
+    ElementUtils elementUtils;
     WebDriver driver;
-
     public AccountSuccessPage(WebDriver driver) {
+        super(driver);
         this.driver = driver;
+        elementUtils = new ElementUtils(driver);
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = "//a[@class='list-group-item'][normalize-space()='Logout']")
-    private WebElement logOutOption;
+    @FindBy(linkText = "Logout")
+    private WebElement logoutOption;
 
     @FindBy(xpath = "//div[@id='common-success']//h1")
     private WebElement pageHeading;
@@ -29,23 +33,23 @@ public class AccountSuccessPage {
     private WebElement accountSuccessPageBreadcrumb;
 
     public boolean isUserLoggedIn() {
-        return logOutOption.isDisplayed();
+        return elementUtils.isElementDisplayed(logoutOption);
     }
 
-    public String getPageHeadingText() {
-        return pageHeading.getText();
+    public String getPageHeading() {
+        return elementUtils.getTextOfElement(pageHeading);
     }
 
-    public String getPageContentText() {
-        return pageContent.getText();
+    public String getPageContent() {
+        return elementUtils.getTextOfElement(pageContent);
     }
 
-    public AccountPage clickContinueButton() {
-        continueButton.click();
+    public AccountPage clickOnContinueButton() {
+        elementUtils.clickOnElement(continueButton);
         return new AccountPage(driver);
     }
 
     public boolean didWeNavigateToAccountSuccessPage() {
-        return accountSuccessPageBreadcrumb.isDisplayed();
+        return elementUtils.isElementDisplayed(accountSuccessPageBreadcrumb);
     }
 }
