@@ -13,7 +13,7 @@ import utils.CommonUtils;
 import java.util.Properties;
 
 public class Login extends Base {
-    WebDriver driver;
+    public WebDriver driver;
     Properties prop;
 
     @BeforeMethod

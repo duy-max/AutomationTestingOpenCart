@@ -29,6 +29,7 @@ import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
 
 import pages.*;
+import utils.MyXLSReader;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -592,13 +593,10 @@ public class Register extends Base {
 
         String warningMessage = "Password entered is not matching the Complexity standards";
 
-        boolean state = false;
+        boolean state;
 
         try {
-            String acutalWarningMessage = registerPage.getPasswordWarning();
-            if (acutalWarningMessage.equals(warningMessage)) {
-                state = true;
-            }
+            state = registerPage.getPasswordWarning().equals(warningMessage);
         } catch (NoSuchElementException e) {
             state = false;
         }
@@ -608,12 +606,12 @@ public class Register extends Base {
 
     }
 
-//    @DataProvider(name = "passwordSupplier")
-//    public Object[][] supplyPasswords() {
-//        myXLSReader = new MyXLSReader(System.getProperty("user.dir")+"\\src\\test\\resources\\TutorialsNinja.xlsx");
-//        Object[][] data = CommonUtils.getTestData(myXLSReader,"RegisterTestSupplyPasswords","data");
-//        return data;
-//    }
+    @DataProvider(name = "passwordSupplier")
+    public Object[][] supplyPasswords() {
+        myXLSReader = new MyXLSReader(System.getProperty("user.dir")+"\\src\\test\\resources\\TutorialsNinja.xlsx");
+        Object[][] data = CommonUtils.getTestData(myXLSReader,"RegisterTestSupplyPasswords","data");
+        return data;
+    }
 
     @Test(priority = 18)
     public void verifyRegisteringAccountFieldsHeightWidthAligment() throws IOException {

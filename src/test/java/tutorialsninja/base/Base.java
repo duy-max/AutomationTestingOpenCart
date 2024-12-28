@@ -11,11 +11,12 @@ import utils.CommonUtils;
 
 import java.time.Duration;
 import java.util.Properties;
+import utils.MyXLSReader;
 
 public class Base {
     WebDriver driver;
     Properties prop;
-   // MyXSL
+    public MyXLSReader myXLSReader;
     public LandingPage landingPage;
     public RegisterPage registerPage;
     public AccountSuccessPage accountSuccessPage;
