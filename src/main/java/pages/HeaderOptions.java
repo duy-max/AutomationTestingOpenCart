@@ -4,13 +4,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import pages.root.RootPage;
 import utils.ElementUtils;
 
-public class HeaderOptions {
+public class HeaderOptions extends RootPage {
     ElementUtils elementUtils;
     WebDriver driver;
     public HeaderOptions(WebDriver driver) {
-       // super(driver);
+        super(driver);
         this.driver = driver;
         elementUtils = new ElementUtils(driver);
         PageFactory.initElements(driver, this);
@@ -61,7 +62,7 @@ public class HeaderOptions {
         elementUtils.enterTextIntoElement(searchBoxField, productName);
     }
 
-    public boolean isLogoutOptionAvaialable() {
+    public boolean isLogoutOptionAvailable() {
         return elementUtils.isElementDisplayed(logoutOption);
     }
 

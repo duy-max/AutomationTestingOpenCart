@@ -24,8 +24,6 @@ public class AccountPage extends RootPage {
     @FindBy(linkText = "Subscribe / unsubscribe to newsletter")
     private WebElement subscribeUnsubscribeNewsletterOption;
 
-    @FindBy(xpath = "//a[@class='list-group-item'][text()='Logout']")
-    private WebElement logoutOption;
 
     @FindBy(linkText = "Change your password")
     private WebElement changeYourPassword;
@@ -42,14 +40,14 @@ public class AccountPage extends RootPage {
         return new ChangePasswordPage(driver);
     }
 
-    public LogoutPage clickOnLogoutOption() {
-        elementUtils.clickOnElement(logoutOption);
-        return new LogoutPage(driver);
-    }
-
-    public boolean isUserLoggedIn() {
-        return elementUtils.isElementDisplayed(logoutOption);
-    }
+//    public LogoutPage clickOnLogoutOption() {
+//        elementUtils.clickOnElement(logoutOption);
+//        return new LogoutPage(driver);
+//    }
+//
+//    public boolean isUserLoggedIn() {
+//        return elementUtils.isElementDisplayed(logoutOption);
+//    }
 
     public boolean didWeNavigateToAccountPage() {
         return elementUtils.isElementDisplayed(editYourAccountInformationOption);

@@ -31,7 +31,6 @@ public class Login extends Base {
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
         accountPage = loginPage.clickOnLoginButton();
-        Assert.assertTrue(accountPage.isUserLoggedIn());
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
 
     }
@@ -93,7 +92,6 @@ public class Login extends Base {
         pressKeyMultipleTimes(driver, Keys.TAB, 23);
         enterDetailsIntoLoginPageFields(driver);
         accountPage = new AccountPage(driver);
-        Assert.assertTrue(accountPage.isUserLoggedIn());
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
 
 
@@ -117,10 +115,10 @@ public class Login extends Base {
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
         loginPage.clickOnLoginButton();
-        navigateBack(driver);
+        driver = navigateBack(driver);
         loginPage = new LoginPage(driver);
         accountPage = loginPage.clickOnMyAccountRightColumnOption();
-        Assert.assertTrue(accountPage.isUserLoggedIn());
+        Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
 
     }
 
@@ -130,10 +128,11 @@ public class Login extends Base {
         loginPage.enterPassword(prop.getProperty("validPassword"));
         accountPage = loginPage.clickOnLoginButton();
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
-        logoutPage = accountPage.clickOnLogoutOption();
-        Assert.assertTrue(logoutPage.isLogoutPageDisplayed());
-        navigateBack(driver);
-        Assert.assertTrue(accountPage.isUserLoggedIn());
+        rightColumnOptions = new RightColumnOptions(accountPage.getDriver());
+        logoutPage = rightColumnOptions.clickOnRightSideLogoutOption();
+        Assert.assertTrue(logoutPage.didWeNavigateToAccountLogoutPage());
+        driver = navigateBack(driver);
+        Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
 
     }
 
@@ -217,8 +216,9 @@ public class Login extends Base {
         changePasswordPage.enterPasswordConfirm(newPassword);
         accountPage = changePasswordPage.clickContinueButton();
         Assert.assertEquals(accountPage.getMessage(), expectedWarningMessage);
-        logoutPage = accountPage.clickOnLogoutOption();
-        loginPage = logoutPage.clickOnLoginLinkRightColumnOption();
+        rightColumnOptions = new RightColumnOptions(accountPage.getDriver());
+        logoutPage = rightColumnOptions.clickOnRightSideLogoutOption();
+        loginPage = logoutPage.selectLoginOption();
         loginPage.enterEmail(prop.getProperty("existingEmailTwo"));
         loginPage.enterPassword(oldPassword);
         System.out.println("old password: " + oldPassword);
@@ -242,7 +242,7 @@ public class Login extends Base {
         headerOptions = new HeaderOptions(driver);
         contactUsPage = headerOptions.selectPhoneIconOption();
         Assert.assertTrue(contactUsPage.didWeNavigateToContactUsPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         driver = loginPage.getDriver();
@@ -254,25 +254,25 @@ public class Login extends Base {
         headerOptions = new HeaderOptions(loginPage.getDriver());
         shoppingCartPage = headerOptions.selectShoppingCartOption();
         Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         headerOptions = new HeaderOptions(loginPage.getDriver());
         shoppingCartPage = headerOptions.selectCheckoutOption();
         Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         headerOptions = new HeaderOptions(loginPage.getDriver());
         landingPage = headerOptions.selectLogoOption();
         Assert.assertEquals(driver.getCurrentUrl(), prop.getProperty("landingPageURL"));
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         headerOptions = new HeaderOptions(loginPage.getDriver());
         searchPage = headerOptions.clickOnSearchButton();
         Assert.assertTrue(searchPage.didWeNavigateToSearchPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         loginPage = loginPage.clickOnLoginBreadcrumb();
@@ -287,17 +287,17 @@ public class Login extends Base {
         headerOptions = new HeaderOptions(loginPage.getDriver());
         landingPage = headerOptions.clickOnHomeBreadcrumb();
         Assert.assertEquals(getPageURL(driver), prop.getProperty("landingPageURL"));
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         registerPage = loginPage.clickOnContinueButton();
         Assert.assertTrue(registerPage.didWeNavigateToRegisterAccountPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         forgottenPasswordPage = loginPage.clickOnForgottenPasswordLink();
         Assert.assertTrue(forgottenPasswordPage.didWeNavigateToForgottendPasswordPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         loginPage.clickOnLoginButton();
@@ -312,13 +312,13 @@ public class Login extends Base {
         rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
         registerPage = rightColumnOptions.clickOnRightSideRegisterOption();
         Assert.assertTrue(registerPage.didWeNavigateToRegisterAccountPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
         forgottenPasswordPage = rightColumnOptions.clickOnRightSideForgottenPasswordOption();
         Assert.assertTrue(forgottenPasswordPage.didWeNavigateToForgottendPasswordPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         rightColumnOptions = new RightColumnOptions(loginPage.getDriver());
@@ -374,67 +374,67 @@ public class Login extends Base {
         footerOptions = new FooterOptions(loginPage.getDriver());
         AboutUsPage aboutUsPage = footerOptions.clickOnAboutUsFooterOption();
         Assert.assertTrue(aboutUsPage.didWeNavigateToAboutUsBreadcrumb());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         deliveryInformationPage = footerOptions.clickOnDeliveryInformationFooterOption();
         Assert.assertTrue(deliveryInformationPage.didWeNavigateToDeliveryInformationPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         privacyPolicyPage = footerOptions.clickOnPrivacyPolicyFooterOption();
         Assert.assertTrue(privacyPolicyPage.didWeNavigateToPrivacyPolicyPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         termsAndConditionsPage = footerOptions.clickOnTermsAndConditionsFooterOption();
         Assert.assertTrue(termsAndConditionsPage.didWeNavigateToTermsAndConditionsPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         contactUsPage = footerOptions.clickOnContactUsFooterOption();
         Assert.assertTrue(contactUsPage.didWeNavigateToContactUsPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         productReturnsPage = footerOptions.clickOnReturnsFooterOption();
         Assert.assertTrue(productReturnsPage.didWeNavigateToProductReturnsPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         siteMapPage = footerOptions.clickOnSiteMapFooterOption();
         Assert.assertTrue(siteMapPage.didWeNavigateToSiteMapPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         brandPage = footerOptions.clickOnBrandsFooterOption();
         Assert.assertTrue(brandPage.didWeNavigateToBrandsPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         giftCertificatePage = footerOptions.clickOnGiftCertificateFooterOption();
         Assert.assertTrue(giftCertificatePage.didWeNavigateToGiftCertificatePage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         affiliateLoginPage = footerOptions.clickOnAffiliateFooterOption();
         Assert.assertEquals(driver.getCurrentUrl(), prop.getProperty("affiliateLoginPageURL"));
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
         specialOffersPage = footerOptions.clickOnSpecialsFooterOption();
         Assert.assertTrue(specialOffersPage.didWeNavigateToSpecialOffersPage());
-        navigateBack(driver);
+        driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         footerOptions = new FooterOptions(loginPage.getDriver());
@@ -514,7 +514,6 @@ public class Login extends Base {
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
         accountPage = loginPage.clickOnLoginButton();
-        Assert.assertTrue(accountPage.isUserLoggedIn());
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
 
     }

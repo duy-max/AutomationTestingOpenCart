@@ -82,8 +82,9 @@ public class Base {
                 .sendKeys(Keys.ENTER).build().perform();
     }
 
-    public void navigateBack(WebDriver driver){
+    public WebDriver navigateBack(WebDriver driver){
         driver.navigate().back();
+        return driver;
     }
 
     public String getHTMLCodeOfThePage(WebDriver driver){
@@ -97,8 +98,11 @@ public class Base {
         return driver.getTitle();
     }
 
-    public void  refreshPage(WebDriver driver) {
+    public WebDriver  refreshPage(WebDriver driver) {
+        System.out.println("truoc refresh");
         driver.navigate().refresh();
+        System.out.println("sau refresh");
+        return driver;
     }
 
     public WebDriver navigateToRegisterPage(WebDriver driver,String URL) {

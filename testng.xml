@@ -7,7 +7,7 @@
     <test thread-count="5" name="Test">
         <classes>
 <!--            <class name="tutorialsninja.tests.Register"/>-->
-            <class name="tutorialsninja.tests.Login">
+            <class name="tutorialsninja.tests.Logout">
 
         </class>
         </classes>
