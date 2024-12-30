@@ -86,6 +86,17 @@ public class ElementUtils {
         }
     }
 
+    public String getTextOfElementWithSomeDelay(WebElement element, int delay) {
+        try {
+            Thread.sleep(delay);
+           return element.getText();
+        } catch (NoSuchElementException e) {
+            return "";
+        } catch (Exception e) {
+            return"";
+        }
+    }
+
     public String getDomAttributeOfElement(WebElement element, String attribute) {
         try {
             return element.getDomAttribute(attribute); // Trả về trực tiếp kết quả
@@ -128,9 +139,25 @@ public class ElementUtils {
         actions.keyDown(key).perform();
     }
 
-    public void pressKeyboardKey(String keyText) {
+    public void pressKeyboardKey(Keys keyText) {
         Actions actions = new Actions(driver);
         actions.sendKeys(keyText).perform();
+    }
+
+    public void pressKeyMultipleTimes(Keys keyText, int times) {
+        Actions actions = new Actions(driver);
+        for (int i = 0; i < times; i++){
+            actions.sendKeys(keyText).perform();
+        }
+
+    }
+
+
+    public void enterTextIntoFieldUsingKeyboardKeys(String text) {
+
+        Actions actions = new Actions(driver);
+        actions.sendKeys(text).perform();
+
     }
 
     public void releaseKeyboardKey(Keys key) {
@@ -193,20 +220,28 @@ public class ElementUtils {
         return text;
     }
 
-    public void selectOptionInDropDownFieldUsingIndex(WebElement element, int indexNumber) {
+    public void selectOptionInDropDownFieldUsingVisibleText(WebElement element, String value) {
         if (isElementDisplayed(element) && isElementEnabled(element)) {
             Select select = new Select(element);
-            select.selectByIndex(indexNumber);
+            List<WebElement> options = select.getOptions();
+            for (WebElement option : options) {
+                String visibleText = option.getText().replaceAll("&nbsp;", "").trim();
+                if (visibleText.equals(value)) {
+                    select.selectByIndex(options.indexOf(option));
+                    break;
+                }
+            }
         }
     }
 
     public int getElementCount(List<WebElement> elements) {
-        int n = 0;
+        int n;
         try {
             n = elements.size();
         } catch (NoSuchElementException e) {
             n = 0;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             n = 0;
         }
         return n;

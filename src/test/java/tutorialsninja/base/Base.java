@@ -43,6 +43,8 @@ public class Base {
     public FooterOptions footerOptions;
     public ChangePasswordPage changePasswordPage;
     public LogoutPage logoutPage;
+    public ProductDisplayPage productDisplayPage;
+    public ProductComparisonPage productComparisonPage;
 
     public WebDriver openBrowserAndApplication() {
 

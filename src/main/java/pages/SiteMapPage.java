@@ -19,8 +19,16 @@ WebDriver driver;
     @FindBy(xpath = "//ul[@class='breadcrumb']//a[text()='Site Map']")
     private WebElement siteMapPageBreadcrumb;
 
+    @FindBy(linkText="Search")
+    private WebElement searchLink;
     public boolean didWeNavigateToSiteMapPage() {
         return elementUtils.isElementDisplayed(siteMapPageBreadcrumb);
+    }
+
+
+    public SearchPage clickOnSearchLink() {
+        elementUtils.clickOnElement(searchLink);
+        return new SearchPage(driver);
     }
 
 }
