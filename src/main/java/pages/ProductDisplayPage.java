@@ -23,8 +23,31 @@ public class ProductDisplayPage extends RootPage {
     @FindBy(className="thumbnails")
     private WebElement thumbnailsSection;
 
+    @FindBy(linkText="product comparison")
+    private WebElement productComparisonLink;
+
+
+    @FindBy(xpath="//button[@*='Compare this Product']")
+    private WebElement compareThisProduct;
+
+
+    public String getToolTipForThisProductOption(){
+        return elementUtils.getToolTip(compareThisProduct);
+    }
+
+    public void selectCompareProductOption(){
+        elementUtils.clickOnElement(compareThisProduct);
+    }
+
     public boolean didWeNavigateToProductDisplayPage() {
         return elementUtils.isElementDisplayed(thumbnailsSection);
+    }
+
+    public ProductComparisonPage clickOnProductComparisonLink() {
+
+        elementUtils.clickOnElement(productComparisonLink);
+
+        return new ProductComparisonPage(driver);
     }
 
 }

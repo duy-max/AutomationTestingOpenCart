@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,6 +26,9 @@ public class SearchPage extends RootPage {
 
     @FindBy(linkText = "HP LP3065")
     private WebElement existingProduct;
+
+    @FindBy(xpath = "//a[contains(text(), 'LP3065')]")
+    private WebElement exisPro;
 
     @FindBy(linkText = "iMac")
     private WebElement iMacProduct;
@@ -59,9 +63,6 @@ public class SearchPage extends RootPage {
     @FindBy(xpath="//span[text()='Add to Cart']")
     private WebElement addToCartOption;
 
-    @FindBy(xpath="//div[@class='alert alert-success alert-dismissible']")
-    private WebElement successMessage;
-
     @FindBy(xpath = "//button[@*='Add to Wish List']")
     private WebElement addToWishListOption;
 
@@ -92,6 +93,8 @@ public class SearchPage extends RootPage {
     @FindBy(xpath = "//div[@id='content']//h1")
     private WebElement searchPageHeading;
 
+    @FindBy(linkText="product comparison")
+    private WebElement productComparisonLink;
 
     public void selectOptionFromCategoryDropdownField(String value) {
         elementUtils.selectOptionInDropDownFieldUsingVisibleText(categoryDropdownField, value);
@@ -139,11 +142,8 @@ public class SearchPage extends RootPage {
         return new ProductDisplayPage(driver);
     }
 
-    public String getSuccessMessage() {
-        String fullText = elementUtils.getTextOfElementWithSomeDelay(successMessage, 3000);
-        //Tách chuỗi thành từng dòng
-        String[] lines =  fullText.split("\n");
-        return lines[0]; //lấy dòng đầu
+    public String getToolTip(){
+        return elementUtils.getToolTip(compareThisProduct);
     }
 
     public void selectGridViewOption() {
@@ -274,5 +274,15 @@ public class SearchPage extends RootPage {
         elementUtils.pressKeyMultipleTimes(Keys.TAB,30);
         elementUtils.pressKeyboardKey(Keys.ARROW_DOWN);
         return new SearchPage(driver);
+    }
+
+    public ProductDisplayPage clickOnProductDisplayInSearchResults(){
+        elementUtils.clickOnElement(existingProduct);
+        return new ProductDisplayPage(driver);
+    }
+
+    public ProductComparisonPage clickOnProductComparisonLink(){
+        elementUtils.clickOnElement(productCompareLink);
+        return new ProductComparisonPage(driver);
     }
 }

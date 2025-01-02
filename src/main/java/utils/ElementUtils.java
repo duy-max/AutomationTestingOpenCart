@@ -54,6 +54,10 @@ public class ElementUtils {
 
     public void clickOnElement(WebElement element) {
         try {
+//            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//            wait.until(ExpectedConditions.visibilityOf(element));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
             if (element.isDisplayed() && element.isEnabled()) {
                 element.click();
             }
@@ -80,9 +84,9 @@ public class ElementUtils {
         } catch (NoSuchElementException e) {
             return ""; // Trả về chuỗi rỗng nếu element không tồn tại
         } catch (StaleElementReferenceException e) {
-            return ""; // Trả về chuỗi rỗng nếu element không còn hợp lệ trong DOM
+            return "";
         } catch (WebDriverException e) {
-            return ""; // Trả về chuỗi rỗng nếu có lỗi liên quan đến WebDriver
+            return "";
         }
     }
 
@@ -245,5 +249,13 @@ public class ElementUtils {
             n = 0;
         }
         return n;
+    }
+
+    public String getToolTip(WebElement element) {
+       String text = null;
+        if(isElementDisplayed(element)){
+            text = element.getDomAttribute("data-original-title");
+        }
+        return text;
     }
 }

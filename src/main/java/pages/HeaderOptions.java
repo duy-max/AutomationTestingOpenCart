@@ -55,9 +55,12 @@ public class HeaderOptions extends RootPage {
     @FindBy(name = "search")
     private WebElement searchBoxField;
 
+
+
     public String getPlaceHolderTextOfSearchBoxField() {
         return elementUtils.getDomAttributeOfElement(searchBoxField,"placeholder");
     }
+
 
     public void enterProductIntoSearchBoxField(String productName) {
         elementUtils.enterTextIntoElement(searchBoxField, productName);
@@ -131,6 +134,11 @@ public class HeaderOptions extends RootPage {
         elementUtils.pressKeyboardKey(Keys.TAB);
         elementUtils.pressKeyboardKey(Keys.ENTER);
         return new SearchPage(driver);
+    }
+
+    public SearchPage searchForAProduct(String productName) {
+        enterProductIntoSearchBoxField(productName);
+        return clickOnSearchButton();
     }
 
 }

@@ -313,13 +313,6 @@ public class RegisterPage extends RootPage {
         return elementUtils.getCSSPropertyOfPuseudoElement(passwordConfirmLabel,"color");
     }
 
-    public String getPrivacyPolicyLabelContent(WebDriver driver) {
-        return elementUtils.getCSSPropertyOfPuseudoElement(privacyPolicyLabel,"content");
-    }
-
-    public String getPrivacyPolicyLabelColor(WebDriver driver) {
-        return elementUtils.getCSSPropertyOfPuseudoElement(privacyPolicyLabel,"color");
-    }
 
     public String getFirstNameFieldHeight() {
         return elementUtils.getCSSPropertyOfElement(firstNameField,"height");

@@ -20,7 +20,15 @@ public class ProductComparisonPage extends RootPage{
     @FindBy(xpath="//ul[@class='breadcrumb']//a[text()='Product Comparison']")
     private WebElement productComparisonPageBreadcrumb;
 
+
+    @FindBy(xpath=" //strong[normalize-space()='HP LP3065']")
+    private WebElement productDetailOfHP;
+
     public boolean didWeNavigateToProductComparisonPage() {
         return elementUtils.isElementDisplayed(productComparisonPageBreadcrumb);
+    }
+
+    public boolean didDetailOfProductGotAddedForComparison(){
+       return elementUtils.isElementDisplayed(productDetailOfHP);
     }
 }
