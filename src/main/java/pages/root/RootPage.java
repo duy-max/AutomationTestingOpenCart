@@ -3,6 +3,7 @@ package pages.root;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import pages.ProductComparisonPage;
 import utils.ElementUtils;
 
 public class RootPage {
@@ -19,6 +20,39 @@ public class RootPage {
 
     @FindBy(xpath="//div[@class='alert alert-success alert-dismissible']")
     private WebElement successMessage;
+
+    @FindBy(linkText="product comparison")
+    private WebElement productCompareLink;
+
+    @FindBy(xpath="//button[@*='Compare this Product']")
+    private WebElement compareThisProduct;
+
+    @FindBy(id="list-view")
+    private WebElement listViewOption;
+
+    @FindBy(id="grid-view")
+    private WebElement gridViewOption;
+
+    public ProductComparisonPage clickOnProductComparisonLink(){
+        elementUtils.clickOnElement(productCompareLink);
+        return new ProductComparisonPage(driver);
+    }
+
+    public String getToolTipForThisProductOption(){
+        return elementUtils.getToolTip(compareThisProduct);
+    }
+
+    public void selectCompareThisProductOption() {
+        elementUtils.clickOnElement(compareThisProduct);
+    }
+
+    public void selectListViewOption() {
+        elementUtils.clickOnElement(listViewOption);
+    }
+
+    public void selectGridViewOption() {
+        elementUtils.clickOnElement(gridViewOption);
+    }
 
     public boolean isTextMatching(String expectedText, String actualText) {
         boolean b = false; // Mặc định là false

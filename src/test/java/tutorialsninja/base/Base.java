@@ -45,6 +45,7 @@ public class Base {
     public LogoutPage logoutPage;
     public ProductDisplayPage productDisplayPage;
     public ProductComparisonPage productComparisonPage;
+    public CategoryPage categoryPage;
 
     public WebDriver openBrowserAndApplication() {
 

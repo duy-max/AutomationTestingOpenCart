@@ -9,14 +9,16 @@ import utils.ElementUtils;
 
 public class AboutUsPage extends RootPage {
     ElementUtils elementUtils;
-WebDriver driver;
+    WebDriver driver;
+
     public AboutUsPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
         elementUtils = new ElementUtils(driver);
         PageFactory.initElements(driver, this);
     }
-    @FindBy(xpath="//ul[@class='breadcrumb']//a[text()='About Us']")
+
+    @FindBy(xpath = "//ul[@class='breadcrumb']//a[text()='About Us']")
     private WebElement aboutUSBreadcrumb;
 
     public boolean didWeNavigateToAboutUsBreadcrumb() {

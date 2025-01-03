@@ -1,5 +1,6 @@
 package pages;
 
+import org.apache.poi.ss.formula.functions.WeekNum;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -55,7 +56,20 @@ public class HeaderOptions extends RootPage {
     @FindBy(name = "search")
     private WebElement searchBoxField;
 
+    @FindBy(xpath = "//a[normalize-space()='Desktops']")
+    private WebElement desktopsMenu;
 
+@FindBy(xpath = "//a[normalize-space()='Show AllDesktops']")
+    private WebElement showAllDesktops;
+
+    public void clickOnDesktopsMenu(){
+        elementUtils.clickOnElement(desktopsMenu);
+    }
+
+    public CategoryPage selectShowAllDesktopsOption(){
+        elementUtils.clickOnElement(showAllDesktops);
+        return new CategoryPage(driver);
+    }
 
     public String getPlaceHolderTextOfSearchBoxField() {
         return elementUtils.getDomAttributeOfElement(searchBoxField,"placeholder");

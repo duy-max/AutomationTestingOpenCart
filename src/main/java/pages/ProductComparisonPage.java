@@ -21,7 +21,7 @@ public class ProductComparisonPage extends RootPage{
     private WebElement productComparisonPageBreadcrumb;
 
 
-    @FindBy(xpath=" //strong[normalize-space()='HP LP3065']")
+    @FindBy(xpath="//strong[text()='Apple Cinema 30\"' or text()='HP LP3065' or text()='MacBook']")
     private WebElement productDetailOfHP;
 
     public boolean didWeNavigateToProductComparisonPage() {

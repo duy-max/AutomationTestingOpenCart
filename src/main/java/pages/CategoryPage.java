@@ -1,33 +1,28 @@
-
 package pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
 import pages.root.RootPage;
 import utils.ElementUtils;
 
-public class ProductDisplayPage extends RootPage {
-
-    WebDriver driver;
+public class CategoryPage extends RootPage {
     ElementUtils elementUtils;
-    public ProductDisplayPage(WebDriver driver) {
+    WebDriver driver;
+
+    public CategoryPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
         elementUtils = new ElementUtils(driver);
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(driver, this);
     }
 
-    @FindBy(className="thumbnails")
-    private WebElement thumbnailsSection;
+    @FindBy(xpath = "//ul[@class='breadcrumb']//li[2]")
+    private WebElement categoryBreadcrumb;
 
-
-    public boolean didWeNavigateToProductDisplayPage() {
-        return elementUtils.isElementDisplayed(thumbnailsSection);
+    public boolean didWeNavigateToCategoryBreadcrumb() {
+        return elementUtils.isElementDisplayed(categoryBreadcrumb);
     }
-
-
 
 }

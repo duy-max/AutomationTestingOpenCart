@@ -27,8 +27,6 @@ public class SearchPage extends RootPage {
     @FindBy(linkText = "HP LP3065")
     private WebElement existingProduct;
 
-    @FindBy(xpath = "//a[contains(text(), 'LP3065')]")
-    private WebElement exisPro;
 
     @FindBy(linkText = "iMac")
     private WebElement iMacProduct;
@@ -54,20 +52,11 @@ public class SearchPage extends RootPage {
     @FindBy(name="category_id")
     private WebElement categoryDropdownField;
 
-    @FindBy(id="list-view")
-    private WebElement listViewOption;
-
-    @FindBy(id="grid-view")
-    private WebElement gridViewOption;
-
     @FindBy(xpath="//span[text()='Add to Cart']")
     private WebElement addToCartOption;
 
     @FindBy(xpath = "//button[@*='Add to Wish List']")
     private WebElement addToWishListOption;
-
-    @FindBy(xpath="//button[@*='Compare this Product']")
-    private WebElement compareThisProduct;
 
     @FindBy(xpath = "//div[@class='product-thumb']//img")
     private WebElement productImage;
@@ -93,8 +82,6 @@ public class SearchPage extends RootPage {
     @FindBy(xpath = "//div[@id='content']//h1")
     private WebElement searchPageHeading;
 
-    @FindBy(linkText="product comparison")
-    private WebElement productComparisonLink;
 
     public void selectOptionFromCategoryDropdownField(String value) {
         elementUtils.selectOptionInDropDownFieldUsingVisibleText(categoryDropdownField, value);
@@ -116,9 +103,7 @@ public class SearchPage extends RootPage {
         elementUtils.clickOnElement(searchButton);
     }
 
-    public void selectListViewOption() {
-        elementUtils.clickOnElement(listViewOption);
-    }
+
 
     public void selectAddToCartOption() {
         elementUtils.clickOnElement(addToCartOption);
@@ -128,9 +113,7 @@ public class SearchPage extends RootPage {
         elementUtils.clickOnElement(addToWishListOption);
     }
 
-    public void selectCompareThisProductOption() {
-        elementUtils.clickOnElement(compareThisProduct);
-    }
+
 
     public ProductDisplayPage selectProductImage() {
         elementUtils.clickOnElement(productImage);
@@ -142,13 +125,8 @@ public class SearchPage extends RootPage {
         return new ProductDisplayPage(driver);
     }
 
-    public String getToolTip(){
-        return elementUtils.getToolTip(compareThisProduct);
-    }
 
-    public void selectGridViewOption() {
-        elementUtils.clickOnElement(gridViewOption);
-    }
+
 
     public void enterIntoSearchCriteriaField(String text) {
         elementUtils.enterTextIntoElement(searchCriteriaField, text);
@@ -281,8 +259,4 @@ public class SearchPage extends RootPage {
         return new ProductDisplayPage(driver);
     }
 
-    public ProductComparisonPage clickOnProductComparisonLink(){
-        elementUtils.clickOnElement(productCompareLink);
-        return new ProductComparisonPage(driver);
-    }
 }
