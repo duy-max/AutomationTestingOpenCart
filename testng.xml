@@ -6,8 +6,18 @@
 </listeners>
 <test thread-count="5" name="Test">
     <classes>
-        <class name="tutorialsninja.tests.Search">
+        <class name="tutorialsninja.tests.ProductCompare">
         </class>
     </classes>
 </test> <!-- Test -->
 </suite> <!-- Suite -->
+
+<!--<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">-->
+<!--<suite name="ParallelTestSuite" >-->
+<!--<test name="ProductCompareTests" parallel="methods">-->
+<!--    <classes>-->
+<!--        <class name="tutorialsninja.tests.ProductCompare" />-->
+<!--    </classes>-->
+<!--</test>-->
+<!--</suite>-->
+
