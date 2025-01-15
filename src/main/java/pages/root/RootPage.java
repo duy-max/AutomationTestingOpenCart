@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.ProductComparisonPage;
+import pages.ShoppingCartPage;
 import utils.ElementUtils;
 
 public class RootPage {
@@ -21,8 +22,16 @@ public class RootPage {
     @FindBy(xpath="//div[@class='alert alert-success alert-dismissible']")
     private WebElement successMessage;
 
+    @FindBy(xpath="//div[@class='alert alert-danger alert-dismissible']")
+    private WebElement failMessage;
+
+
+
     @FindBy(linkText="product comparison")
     private WebElement productCompareLink;
+
+    @FindBy(xpath = "//a[normalize-space()='shopping cart']")
+    private WebElement shoppingCartLink;
 
     @FindBy(xpath="//button[@*='Compare this Product']")
     private WebElement compareThisProduct;
@@ -36,6 +45,11 @@ public class RootPage {
     public ProductComparisonPage clickOnProductComparisonLink(){
         elementUtils.clickOnElement(productCompareLink);
         return new ProductComparisonPage(driver);
+    }
+
+    public ShoppingCartPage clickOnShoppingCartLink(){
+        elementUtils.clickOnElement(shoppingCartLink);
+        return new ShoppingCartPage(driver);
     }
 
     public String getToolTipForThisProductOption(){
@@ -63,7 +77,12 @@ public class RootPage {
     }
 
     public String getSuccessMessage() {
-        String fullText = elementUtils.getTextOfElementWithSomeDelay(successMessage, 3000);
+        String fullText = elementUtils.getTextOfElement(successMessage);
+        return fullText.replaceAll("\n","").substring(0, fullText.length() -2);
+    }
+
+    public String getFailMessage() {
+        String fullText = elementUtils.getTextOfElement(failMessage);
         return fullText.replaceAll("\n","").substring(0, fullText.length() -2);
     }
 

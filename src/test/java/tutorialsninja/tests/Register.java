@@ -7,14 +7,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.AccountPage;
 import pages.AccountSuccessPage;
 import pages.LandingPage;
 import pages.RegisterPage;
@@ -29,7 +27,8 @@ import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
 
 import pages.*;
-import utils.MyXLSReader;
+import utils.DataProviders;
+import utils.ExcelUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -578,8 +577,8 @@ public class Register extends Base {
 
     }
 
-    @Test(priority = 17, dataProvider = "passwordSupplier")
-    public void verifyRegisteringAccountAndCheckingPasswordComplexityStandards(HashMap<String,String> hMap) {
+    @Test(priority = 17, dataProvider = "Passwords", dataProviderClass = DataProviders.class)
+    public void verifyRegisteringAccountAndCheckingPasswordComplexityStandards(String password) {
 
         registerPage.enterFirstName(prop.getProperty("firstName"));
         registerPage.enterLastName(prop.getProperty("lastName"));
@@ -587,8 +586,9 @@ public class Register extends Base {
         registerPage.enterTelephoneNumber(prop.getProperty("telephoneNumber"));
         registerPage.selectYesNewsletterOption();
         registerPage.selectPrivacyPolicy();
-        registerPage.enterPassword(hMap.get("Passwords"));
-        registerPage.enterConfirmPassword(hMap.get("Passwords"));
+        registerPage.enterPassword(password);
+        System.out.println("Test" + password +"Test");
+        registerPage.enterConfirmPassword(password);
         registerPage.clickOnContinueButton();
 
         String warningMessage = "Password entered is not matching the Complexity standards";
@@ -606,12 +606,6 @@ public class Register extends Base {
 
     }
 
-    @DataProvider(name = "passwordSupplier")
-    public Object[][] supplyPasswords() {
-        myXLSReader = new MyXLSReader(System.getProperty("user.dir")+"\\src\\test\\resources\\TutorialsNinja.xlsx");
-        Object[][] data = CommonUtils.getTestData(myXLSReader,"RegisterTestSupplyPasswords","data");
-        return data;
-    }
 
     @Test(priority = 18)
     public void verifyRegisteringAccountFieldsHeightWidthAligment() throws IOException {
@@ -941,13 +935,13 @@ public class Register extends Base {
         registerPage = new RegisterPage(driver);
         headerOptions = new HeaderOptions(registerPage.getDriver());
         shoppingCartPage = headerOptions.selectShoppingCartOption();
-        Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
+        Assert.assertTrue(shoppingCartPage.didWeNavigateToShoppingCartPage());
         driver = navigateBack(driver);
 
         registerPage = new RegisterPage(driver);
         headerOptions = new HeaderOptions(registerPage.getDriver());
         shoppingCartPage = headerOptions.selectCheckoutOption();
-        Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
+        Assert.assertTrue(shoppingCartPage.didWeNavigateToShoppingCartPage());
         driver = navigateBack(driver);
 
         registerPage = new RegisterPage(driver);

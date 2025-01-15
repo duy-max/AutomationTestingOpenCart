@@ -1,0 +1,7 @@
+2025-01-15 09:17:21 [main] INFO  tutorialsninja.tests.Login - *** Starting TC001_Login ***
+2025-01-15 09:18:53 [main] INFO  tutorialsninja.tests.Login - *** Starting TC001_Login ***
+2025-01-15 09:34:14 [main] INFO  tutorialsninja.tests.Login - *** Starting TC001_Login ***
+2025-01-15 09:34:16 [main] INFO  tutorialsninja.tests.Login - *** TC001_Login passed ***
+2025-01-15 09:36:18 [main] INFO  tutorialsninja.tests.Login - *** Starting TC001_Login ***
+2025-01-15 09:36:19 [main] DEBUG tutorialsninja.tests.Login - Attempt to login
+2025-01-15 09:36:19 [main] INFO  tutorialsninja.tests.Login - *** TC001_Login passed ***

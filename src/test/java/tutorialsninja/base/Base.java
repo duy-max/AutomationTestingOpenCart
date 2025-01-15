@@ -1,5 +1,7 @@
 package tutorialsninja.base;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,12 +13,13 @@ import utils.CommonUtils;
 
 import java.time.Duration;
 import java.util.Properties;
-import utils.MyXLSReader;
+import utils.ExcelUtils;
 
 public class Base {
-    WebDriver driver;
-    Properties prop;
-    public MyXLSReader myXLSReader;
+    public WebDriver driver;
+    public Logger logger;
+    public Properties prop;
+    public ExcelUtils excelUtils;
     public LandingPage landingPage;
     public RegisterPage registerPage;
     public AccountSuccessPage accountSuccessPage;
@@ -46,22 +49,28 @@ public class Base {
     public ProductDisplayPage productDisplayPage;
     public ProductComparisonPage productComparisonPage;
     public CategoryPage categoryPage;
+    public CheckoutPage checkoutPage;
+    public OrderSuccess orderSuccess;
+    public AddressBook addressBook;
 
     public WebDriver openBrowserAndApplication() {
 
         prop = CommonUtils.loadProperties();
+        logger = LogManager.getLogger(this.getClass()); //Tạo Log4j
 
-        String browserName = prop.getProperty("browserName");
+       String browserName = prop.getProperty("browserName");
         switch (browserName) {
             case "chrome" -> driver = new ChromeDriver();
             case "firefox" -> driver = new FirefoxDriver();
             case "edge" -> driver = new EdgeDriver();
+
         }
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(prop.getProperty("appURL"));
         return driver;
     }
+
 
     public void closeBrowser(WebDriver driver) {
         if (driver != null) {

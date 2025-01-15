@@ -31,6 +31,7 @@ public class AccountPage extends RootPage {
     @FindBy(xpath = "//div[@class='alert alert-success alert-dismissible']")
     private WebElement message;
 
+
     public String getMessage() {
         return elementUtils.getTextOfElement(message);
     }

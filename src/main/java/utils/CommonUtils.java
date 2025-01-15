@@ -14,6 +14,8 @@ import javax.mail.Message;
 import javax.mail.Multipart;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -118,12 +120,37 @@ public class CommonUtils {
 
     }
 
-    public String generateString(int length){
+    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, originalImage.getType());
+        resizedImage.getGraphics().drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        return resizedImage;
+    }
+
+    public static boolean compareTwoImagesWithDifferentSize(String imgBigPath, String imgSmallPath) {
+        BufferedImage imgSmall = null;
+        BufferedImage imgBig = null;
+        BufferedImage resizeImgBig = null;
+        try {
+            imgSmall = ImageIO.read(new File(imgSmallPath));
+            imgBig = ImageIO.read(new File(imgBigPath));
+            resizeImgBig = resizeImage(imgBig, imgSmall.getWidth(), imgSmall.getHeight());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ImageDiffer imgDiffer = new ImageDiffer();
+        ImageDiff imgDifference = imgDiffer.makeDiff(resizeImgBig, imgSmall);
+
+        return imgDifference.hasDiff();
+
+    }
+
+    public static String generateString(int length){
         return "a".repeat(length);
     }
 
-    public static Object[][] getTestData(MyXLSReader xls_received, String testName, String sheetName) {
-        MyXLSReader xls = xls_received;
+    public static Object[][] getTestData(ExcelUtils xls_received, String testName, String sheetName) {
+        ExcelUtils xls = xls_received;
         String testCaseName = testName;
         String testDataSheet = sheetName;
         int testStartRowNumber = 1;
@@ -185,6 +212,45 @@ public class CommonUtils {
         return extentReport;
 
     }
+
+    public static void downloadImage(String imageUrl, String savePath) throws Exception {
+        URL url = new URL(imageUrl);
+        try (BufferedInputStream in = new BufferedInputStream(url.openStream());
+             FileOutputStream out = new FileOutputStream(savePath)) {
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                out.write(dataBuffer, 0, bytesRead);
+            }
+        }
+    }
+
+    public static String calculateTotal(String priceText, int quantity) {
+        // Loại bỏ ký tự $ và chuyển chuỗi thành số
+        double price = Double.parseDouble(priceText.replace("$", "").trim());
+
+        // Tính tổng giá trị
+        double total = price * quantity;
+
+        // Định dạng lại kết quả với ký tự $
+        DecimalFormat df = new DecimalFormat("$#.00");
+        return df.format(total);
+    }
+
+    public static String checkTotalBySubTotal(String subTotal, String shippingFee) {
+        // Loại bỏ ký tự $ và chuyển chuỗi thành số
+        double subTotalNumber = Double.parseDouble(subTotal.replace("$", "").trim());
+        double shippingFeeNumber = Double.parseDouble(shippingFee.replace("$", "").trim());
+
+        // Tính tổng giá trị
+        double total = subTotalNumber + shippingFeeNumber;
+
+        // Định dạng lại kết quả với ký tự $
+        DecimalFormat df = new DecimalFormat("$#.00");
+        return df.format(total);
+    }
+
+
 
 
 }

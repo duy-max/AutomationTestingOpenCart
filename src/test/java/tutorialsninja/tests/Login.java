@@ -3,20 +3,20 @@ package tutorialsninja.tests;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.*;
 import tutorialsninja.base.Base;
 import utils.CommonUtils;
+import utils.DataProviders;
 
 import java.util.Properties;
 
 public class Login extends Base {
-    public WebDriver driver;
-    Properties prop;
+    //public WebDriver driver;
+   // Properties prop;
 
     @BeforeMethod
+   // @Parameters({"browser"})
     public void setup() {
         driver = openBrowserAndApplication();
         prop = CommonUtils.loadProperties();
@@ -27,13 +27,17 @@ public class Login extends Base {
 
     @Test(priority = 1)
     public void verifyLoginWithValidCredentials() {
+        logger.info("*** Starting TC001_Login ***");
         Assert.assertTrue(loginPage.didWeNavigateToLoginPage());
         loginPage.enterEmail(prop.getProperty("existingEmail"));
         loginPage.enterPassword(prop.getProperty("validPassword"));
+        logger.debug("Attempt to login");
         accountPage = loginPage.clickOnLoginButton();
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
+        logger.info("*** TC001_Login passed ***");
 
     }
+
 
     @Test(priority = 2)
     public void verifyLoginWithInvalidCredentials() {
@@ -253,13 +257,13 @@ public class Login extends Base {
         loginPage = new LoginPage(driver);
         headerOptions = new HeaderOptions(loginPage.getDriver());
         shoppingCartPage = headerOptions.selectShoppingCartOption();
-        Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
+        Assert.assertTrue(shoppingCartPage.didWeNavigateToShoppingCartPage());
         driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
         headerOptions = new HeaderOptions(loginPage.getDriver());
         shoppingCartPage = headerOptions.selectCheckoutOption();
-        Assert.assertTrue(shoppingCartPage.didWeNaviateToShoppingCartPage());
+        Assert.assertTrue(shoppingCartPage.didWeNavigateToShoppingCartPage());
         driver = navigateBack(driver);
 
         loginPage = new LoginPage(driver);
@@ -515,6 +519,21 @@ public class Login extends Base {
         loginPage.enterPassword(prop.getProperty("validPassword"));
         accountPage = loginPage.clickOnLoginButton();
         Assert.assertTrue(accountPage.didWeNavigateToAccountPage());
+
+    }
+
+    @Test(priority = 22, dataProvider = "LoginData", dataProviderClass = DataProviders.class)
+    public void verifyLoginWithDataFromExcel(String email, String password, String expected) {
+        loginPage.enterEmail(email);
+        loginPage.enterPassword(password);
+        accountPage = loginPage.clickOnLoginButton();
+        boolean targetPage = accountPage.didWeNavigateToAccountPage();
+        if(expected.equalsIgnoreCase("Valid")){
+            Assert.assertTrue(targetPage);
+        }
+        if (expected.equalsIgnoreCase("Invalid")){
+            Assert.assertFalse(targetPage);
+        }
 
     }
 

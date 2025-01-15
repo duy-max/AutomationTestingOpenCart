@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.List;
@@ -54,50 +55,34 @@ public class ElementUtils {
 
     public void clickOnElement(WebElement element) {
         try {
-//            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//            wait.until(ExpectedConditions.visibilityOf(element));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(element));
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView(true);", element);
-            if (element.isDisplayed() && element.isEnabled()) {
-                element.click();
-            }
-
+            element.click();
         } catch (Exception e) {
-            //Dùng js để click
+            //Dùng js để click dù cho bị timeout
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].click();", element);
         }
-
-
     }
 
     public void enterTextIntoElement(WebElement element, String text) {
-        if (isElementDisplayed(element) && isElementEnabled(element)) {
-            element.clear();
-            element.sendKeys(text);
-        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
+        element.sendKeys(text);
     }
 
     public String getTextOfElement(WebElement element) {
         try {
-            return element.getText(); // Trả về trực tiếp kết quả
-        } catch (NoSuchElementException e) {
-            return ""; // Trả về chuỗi rỗng nếu element không tồn tại
-        } catch (StaleElementReferenceException e) {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOf(element));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
+            return element.getText();
+        } catch (TimeoutException e) {
             return "";
-        } catch (WebDriverException e) {
-            return "";
-        }
-    }
-
-    public String getTextOfElementWithSomeDelay(WebElement element, int delay) {
-        try {
-            Thread.sleep(delay);
-           return element.getText();
-        } catch (NoSuchElementException e) {
-            return "";
-        } catch (Exception e) {
-            return"";
         }
     }
 
@@ -258,4 +243,18 @@ public class ElementUtils {
         }
         return text;
     }
+
+    public void setValueAttributeByJS(WebElement element, int quantity){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].value = arguments[1];", element, String.valueOf(quantity));
+
+        // Trigger change event
+        js.executeScript("arguments[0].dispatchEvent(new Event('change'))", element);
+    }
+
+    public void selectElementByVisibleText(WebElement element, String visibleText) {
+        Select select = new Select(element);
+        select.selectByVisibleText(visibleText);
+    }
+
 }

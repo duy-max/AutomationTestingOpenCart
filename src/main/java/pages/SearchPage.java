@@ -31,6 +31,12 @@ public class SearchPage extends RootPage {
     @FindBy(linkText = "iMac")
     private WebElement iMacProduct;
 
+    @FindBy(linkText = "iPhone")
+    private WebElement iPhoneProduct;
+
+    @FindBy(linkText = "Apple Cinema 30\"")
+    private WebElement appleCinemaProduct;
+
     @FindBy(xpath = "//input[@id='button-search']/following-sibling::p")
     private WebElement noProductMessage;
 
@@ -256,6 +262,16 @@ public class SearchPage extends RootPage {
 
     public ProductDisplayPage clickOnProductDisplayInSearchResults(){
         elementUtils.clickOnElement(existingProduct);
+        return new ProductDisplayPage(driver);
+    }
+
+    public ProductDisplayPage clickOnProductIphoneDisplayInSearchResults(){
+        elementUtils.clickOnElement(iPhoneProduct);
+        return new ProductDisplayPage(driver);
+    }
+
+    public ProductDisplayPage clickOnProductAppleCinemaDisplayInSearchResults(){
+        elementUtils.clickOnElement(appleCinemaProduct);
         return new ProductDisplayPage(driver);
     }
 

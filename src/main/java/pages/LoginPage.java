@@ -142,13 +142,10 @@ ElementUtils elementUtils;
         return elementUtils.isElementDisplayed(loginBreadcrumb);
     }
 
-//    public void selectPasswordFieldTextAndCopy(){
-//        passwordField.sendKeys(Keys.CONTROL + "a");
-//        passwordField.sendKeys(Keys.CONTROL + "c");
-//
-//    }
-//
-//    public void pasteCopiedTextIntoEmailField(){
-//        emailField.sendKeys(Keys.CONTROL + "v");
-//    }
+  public AccountPage loginAccount(String email, String password){
+        enterEmail(email);
+        enterPassword(password);
+       return clickOnLoginButton();
+
+  }
 }
