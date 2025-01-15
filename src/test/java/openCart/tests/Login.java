@@ -1,15 +1,12 @@
-package tutorialsninja.tests;
+package openCart.tests;
 
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.*;
-import tutorialsninja.base.Base;
+import openCart.base.Base;
 import utils.CommonUtils;
 import utils.DataProviders;
-
-import java.util.Properties;
 
 public class Login extends Base {
     //public WebDriver driver;

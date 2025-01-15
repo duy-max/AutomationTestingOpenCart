@@ -6,7 +6,7 @@
 </listeners>
 <test thread-count="5" name="Test">
     <classes>
-        <class name="tutorialsninja.tests.ProductCompare">
+        <class name="openCart.tests.Login">
         </class>
     </classes>
 </test> <!-- Test -->
@@ -20,7 +20,7 @@
 <!--<test name="ChromeTest">-->
 <!--    <parameter name="browser" value="chrome"/>-->
 <!--    <classes>-->
-<!--        <class name="tutorialsninja.tests.Login" >-->
+<!--        <class name="openCart.tests.Login" >-->
 <!--        <methods>-->
 <!--            <include name="verifyLoginWithValidCredentials"/>-->
 <!--        </methods>-->
@@ -31,7 +31,7 @@
 <!--    <test name="EdgeTest">-->
 <!--        <parameter name="browser" value="edge"/>-->
 <!--        <classes>-->
-<!--            <class name="tutorialsninja.tests.Login" >-->
+<!--            <class name="openCart.tests.Login" >-->
 <!--                <methods>-->
 <!--                    <include name="verifyLoginWithValidCredentials"/>-->
 <!--                </methods>-->
@@ -42,7 +42,7 @@
 <!--    <test name="FireFoxTest">-->
 <!--        <parameter name="browser" value="firefox"/>-->
 <!--        <classes>-->
-<!--            <class name="tutorialsninja.tests.Login" >-->
+<!--            <class name="openCart.tests.Login" >-->
 <!--                <methods>-->
 <!--                    <include name="verifyLoginWithValidCredentials"/>-->
 <!--                </methods>-->

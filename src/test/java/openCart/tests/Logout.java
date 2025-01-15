@@ -1,4 +1,4 @@
-package tutorialsninja.tests;
+package openCart.tests;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.*;
 
-import tutorialsninja.base.Base;
+import openCart.base.Base;
 import utils.CommonUtils;
 
 import java.util.Properties;

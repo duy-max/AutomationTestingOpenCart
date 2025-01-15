@@ -1,4 +1,4 @@
-package tutorialsninja.temp;
+package openCart.temp;
 
 import java.util.Date;
 

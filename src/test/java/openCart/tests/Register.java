@@ -1,4 +1,4 @@
-package tutorialsninja.tests;
+package openCart.tests;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,13 +10,12 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.AccountSuccessPage;
 import pages.LandingPage;
 import pages.RegisterPage;
-import tutorialsninja.base.Base;
+import openCart.base.Base;
 import utils.CommonUtils;
 
 import javax.mail.*;
@@ -28,14 +27,12 @@ import javax.mail.search.SubjectTerm;
 
 import pages.*;
 import utils.DataProviders;
-import utils.ExcelUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Properties;
 
 public class Register extends Base {

@@ -1,4 +1,4 @@
-package tutorialsninja.tests;
+package openCart.tests;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -7,7 +7,7 @@ import pages.FooterOptions;
 import pages.HeaderOptions;
 import pages.LandingPage;
 import pages.SearchPage;
-import tutorialsninja.base.Base;
+import openCart.base.Base;
 import utils.CommonUtils;
 
 import java.util.Properties;
@@ -15,7 +15,25 @@ import java.util.Properties;
 public class Search extends Base {
     public WebDriver driver;
     Properties prop;
-
+//    Record video
+//    @BeforeClass
+//    public void setupClass() {
+//        try {
+//            RecordVideo.startRecording("Start recording");
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to start recording: " + e.getMessage(), e);
+//        }
+//    }
+//
+//    @AfterClass
+//    public void tearDownClass() {
+//        try {
+//            RecordVideo.stopRecording();
+//            System.out.println("Stop recording");
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to stop recording: " + e.getMessage(), e);
+//        }
+//    }
 
     @BeforeMethod
     public void setup() {
